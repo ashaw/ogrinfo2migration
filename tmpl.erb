@@ -1,0 +1,10 @@
+class Add<%= @attributes["layer_name"].camelize %> < ActiveRecord::Migration
+  def change
+    create_table :<%= @attributes["layer_name"].pluralize %> do |t|
+      <% @attributes.reject {|k,v| k == "layer_name" }.each do |name, type| %>
+        t.<%= type %> :<%= name %>
+      <% end %>
+      t.spatial :the_geom, limit: {:srid=><%= @epsg %>, :type=>"geometry"}
+    end
+  end
+end
