@@ -36,11 +36,15 @@ class Ogrinfo2Migration
 
   def wkt
     # the SRS wkt are the only lines 
-    # that aren't a key-value pair 
+    # that aren't a key-value pair
     wkt = @info.reject {|q| q =~ /:/ }.join("\n")
   end
 
   def get_epsg
+    if wkt == "(unknown)"
+      @epsg = nil
+      return
+    end
     j = JSON.parse(RestClient.get("http://prj2epsg.org/search.json?mode=wkt&terms=#{URI.encode(wkt)}"))
     @epsg = j['codes'][0]['code']
   end
@@ -52,19 +56,4 @@ class Ogrinfo2Migration
       f.write migration
     end
   end
-end
-
-if __FILE__ == $0
-  caveats = <<-TXT
-    Usage:
-      ogrinfo2migration.rb <input> <output>
-  TXT
-  if ARGV.length < 2
-    puts caveats
-    exit 1
-  end
-  input  = ARGV[0]
-  output = ARGV[1]
-  f = Ogrinfo2Migration.new(input, output)
-  f.to_migration
 end

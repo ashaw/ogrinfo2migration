@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+require "#{File.expand_path(File.dirname(__FILE__ ))}/../lib/ogrinfo2migration.rb"
+
+caveats = <<-TXT
+  Usage:
+    ogrinfo2migration <input> <output>
+TXT
+if ARGV.length < 2
+  puts caveats
+  exit 1
+end
+input  = ARGV[0]
+output = ARGV[1]
+f = Ogrinfo2Migration.new(input, output)
+f.to_migration

@@ -4,7 +4,12 @@ class Add<%= @attributes["layer_name"].camelize %> < ActiveRecord::Migration
       <% @attributes.reject {|k,v| k == "layer_name" }.each do |name, type| %>
         t.<%= type %> :<%= name %>
       <% end %>
-      t.spatial :the_geom, limit: {:srid=><%= @epsg %>, :type=>"geometry"}
+      <% if @epsg %>
+        t.spatial :the_geom, limit: {:srid=><%= @epsg %>, :type=>"geometry"}
+      <% end %>
     end
+    <% if @epsg %>
+      add_index :<%= @attributes["layer_name"].pluralize %>, ["the_geom"], :name => "<%= @attributes["layer_name"].pluralize %>_geometry_gist", :spatial => true    
+    <% end %>
   end
 end
