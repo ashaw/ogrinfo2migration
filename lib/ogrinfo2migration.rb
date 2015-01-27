@@ -52,7 +52,7 @@ class Ogrinfo2Migration
   def to_migration
     get_epsg
     migration = ERB.new(File.open("#{File.expand_path(File.dirname(__FILE__))}/tmpl.erb",'r').read).result(binding)
-    File.open("#{@outdir}#{Time.now.strftime("%Y%m%d%H%M%S")}_add_#{@attributes["layer_name"]}.rb", "w") do |f|
+    File.open("#{@outdir}#{Time.now.utc.strftime("%Y%m%d%H%M%S")}_add_#{@attributes["layer_name"]}.rb", "w") do |f|
       f.write migration
     end
   end
