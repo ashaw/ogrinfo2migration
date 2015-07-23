@@ -46,6 +46,10 @@ class Ogrinfo2Migration
       return
     end
     j = JSON.parse(RestClient.get("http://prj2epsg.org/search.json?mode=wkt&terms=#{URI.encode(wkt)}"))
+    if !j || j['totalHits'] < 1
+      @epsg = nil
+      return
+    end
     @epsg = j['codes'][0]['code']
   end
 

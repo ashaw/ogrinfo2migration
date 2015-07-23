@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'ogrinfo2migration'
-  s.version     = '0.0.1'
+  s.version     = '0.0.2'
   s.date        = '2015-03-20'
   s.summary     = "ogrinfo2migration"
   s.description = "ogrinfo2migration"
